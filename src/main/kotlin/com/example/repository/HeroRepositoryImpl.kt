@@ -409,23 +409,11 @@ class HeroRepositoryImpl : HeroRepository {
         )
     }
 
-    private fun calculatePage(page: Int): Map<String, Int?> {
-        var prevPage: Int? = page
-        var nextPage: Int? = page
-        if (page in 1..4) {
-            nextPage = nextPage?.plus(1)
-        }
-        if (page in 2..5) {
-            prevPage = prevPage?.minus(1)
-        }
-        if (page == 1) {
-            prevPage = null
-        }
-        if (page == 5) {
-            nextPage = null
-        }
-        return mapOf(PREVIOUS_PAGE_KEY to prevPage, NEXT_PAGE_KEY to nextPage)
-    }
+    private fun calculatePage(page: Int) =
+        mapOf(
+            PREVIOUS_PAGE_KEY to if (page in 2..5) page.minus(1) else null,
+            NEXT_PAGE_KEY to if (page in 1..4) page.plus(1) else null
+        )
 
     override suspend fun searchHeroes(name: String?): ApiResponse {
         return ApiResponse(
