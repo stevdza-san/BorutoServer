@@ -13,8 +13,6 @@ fun Application.configureRouting() {
         getAllHeroes()
         searchHeroes()
 
-        static("/images") {
-            resources("images")
-        }
+        staticResources(remotePath = "/images", basePackage = "images")
     }
 }
