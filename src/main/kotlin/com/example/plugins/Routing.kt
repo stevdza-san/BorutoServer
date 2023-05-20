@@ -1,6 +1,5 @@
 package com.example.plugins
 
-import com.example.routes.getAllHeroes
 import com.example.routes.getAllHeroesAlternative
 import com.example.routes.root
 import com.example.routes.searchHeroes
@@ -15,8 +14,6 @@ fun Application.configureRouting() {
         getAllHeroesAlternative()
         searchHeroes()
 
-        static("/images") {
-            resources("images")
-        }
+        staticResources(remotePath = "/images", basePackage = "images")
     }
 }
