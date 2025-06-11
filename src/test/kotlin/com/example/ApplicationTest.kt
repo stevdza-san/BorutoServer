@@ -19,6 +19,7 @@ class ApplicationTest {
     @Test
     fun `access root endpoint, assert correct information`() =
         testApplication {
+            application { module() }
             val response = client.get("/")
             assertEquals(
                 expected = HttpStatusCode.OK,
@@ -34,6 +35,7 @@ class ApplicationTest {
     @Test
     fun `access all heroes endpoint, query all pages, assert correct information`() =
         testApplication {
+            application { module() }
             val heroRepository = HeroRepositoryImpl()
             val pages = 1..5
             val heroes = listOf(
@@ -69,6 +71,7 @@ class ApplicationTest {
     @Test
     fun `access all heroes endpoint, query non existing page number, assert error`() =
         testApplication {
+            application { module() }
             val response = client.get("/boruto/heroes?page=6")
             assertEquals(
                 expected = HttpStatusCode.NotFound,
@@ -84,6 +87,7 @@ class ApplicationTest {
     @Test
     fun `access all heroes endpoint, query invalid page number, assert error`() =
         testApplication {
+            application { module() }
             val response = client.get("/boruto/heroes?page=invalid")
             assertEquals(
                 expected = HttpStatusCode.BadRequest,
@@ -104,6 +108,7 @@ class ApplicationTest {
     @Test
     fun `access search heroes endpoint, query hero name, assert single hero result`() =
         testApplication {
+            application { module() }
             val response = client.get("/boruto/heroes/search?name=sas")
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             val actual = Json.decodeFromString<ApiResponse>(response.bodyAsText())
@@ -115,6 +120,7 @@ class ApplicationTest {
     @Test
     fun `access search heroes endpoint, query hero name, assert multiple heroes result`() =
         testApplication {
+            application { module() }
             val response = client.get("/boruto/heroes/search?name=sa")
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             val actual = Json.decodeFromString<ApiResponse>(response.bodyAsText())
@@ -126,6 +132,7 @@ class ApplicationTest {
     @Test
     fun `access search heroes endpoint, query an empty text, assert empty list as a result`() =
         testApplication {
+            application { module() }
             val response = client.get("/boruto/heroes/search?name=")
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             val actual = Json.decodeFromString<ApiResponse>(response.bodyAsText())
@@ -137,6 +144,7 @@ class ApplicationTest {
     @Test
     fun `access search heroes endpoint, query non existing hero, assert empty list as a result`() =
         testApplication {
+            application { module() }
             val response = client.get("/boruto/heroes/search?name=unknown")
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             val actual = Json.decodeFromString<ApiResponse>(response.bodyAsText())
@@ -148,6 +156,7 @@ class ApplicationTest {
     @Test
     fun `access non existing endpoint,assert not found`() =
         testApplication {
+            application { module() }
             val response = client.get("/unknown")
             assertEquals(expected = HttpStatusCode.NotFound, actual = response.status)
             assertEquals(expected = "Page not Found.", actual = response.bodyAsText())

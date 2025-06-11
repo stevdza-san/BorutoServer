@@ -5,14 +5,18 @@ val koinVersion: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.8.21"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    kotlin("jvm") version "2.1.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
 }
 
 group = "com.example"
 version = "0.0.1"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
+}
+
+tasks.create("stage") {
+    dependsOn("installDist")
 }
 
 repositories {
@@ -30,9 +34,11 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
 
-    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+//    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-test-host:${ktorVersion}")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
 
     implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 }
