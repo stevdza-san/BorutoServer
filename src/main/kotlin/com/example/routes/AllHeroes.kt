@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
 fun Route.getAllHeroes() {
-    val heroRepository: HeroRepository by inject()
+    val heroRepository: HeroRepository by application.inject()
 
     get("/boruto/heroes") {
         try {

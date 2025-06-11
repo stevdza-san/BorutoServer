@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
 fun Route.getAllHeroesAlternative() {
-    val heroRepositoryAlternative: HeroRepositoryAlternative by inject()
+    val heroRepositoryAlternative: HeroRepositoryAlternative by application.inject()
 
     get("/boruto/heroes") {
         try {
@@ -31,6 +31,11 @@ fun Route.getAllHeroesAlternative() {
         } catch (e: IllegalArgumentException) {
             call.respond(
                 message = ApiResponse(success = false, message = "Heroes not Found."),
+                status = HttpStatusCode.NotFound
+            )
+        } catch (e: Exception) {
+            call.respond(
+                message = ApiResponse(success = false, message = e.stackTrace.toString()),
                 status = HttpStatusCode.NotFound
             )
         }
